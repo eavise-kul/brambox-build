@@ -9,6 +9,10 @@ environment:
       CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0
 
 
+install:
+  git submodule update --init --recursive
+
+
 build_script:
   - pip install cibuildwheel==0.11.1
   - cibuildwheel --output-dir wheelhouse brambox/
