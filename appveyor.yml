@@ -3,10 +3,10 @@ environment:
 
   matrix:
     - CIBW_BUILD: cp36-*
-      CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {project} && python --version && CYTHON=1 CFLAGS=-O3 CDEBUG=0 python setup.py build_ext --force --inplace --compiler=msvc
+      CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {project} && python --version && CYTHON=1 CFLAGS=-O3 CDEBUG=0 python setup.py build_ext
 
     - CIBW_BUILD: cp37-*
-      CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {project} && python --version && CYTHON=1 CFLAGS=-O3 CDEBUG=0 python setup.py build_ext --force --inplace --compiler=msvc
+      CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {project} && python --version && CYTHON=1 CFLAGS=-O3 CDEBUG=0 python setup.py build_ext
 
 
 install:
