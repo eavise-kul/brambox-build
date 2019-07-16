@@ -28,7 +28,7 @@ matrix:
       env: 
         - PIP=pip2
         - CIBW_BUILD="cp36-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && head -n8 Makefile; make build cython=1 debug=0"
 
     - name: "MacOS py3.7"
       os: osx
