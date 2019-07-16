@@ -1,0 +1,3 @@
+[submodule "brambox"]
+	path = brambox
+	url = https://gitlab.com/eavise/brambox
