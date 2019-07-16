@@ -3,7 +3,7 @@ environment:
 
   matrix:
     - CIBW_BUILD: cp36-*
-      CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {project} && set CYTHON=1 && python setup.py build_ext --force --with-cython --compiler=msvc
+      CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {project} && set CYTHON=1 && python setup.py build_ext --compiler=msvc
 
     - CIBW_BUILD: cp37-*
       CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {project} && python setup.py build_ext --force --inplace --compiler=mscv
