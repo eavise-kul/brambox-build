@@ -15,8 +15,8 @@ env:
     - TWINE_USERNAME=0phoff
       # Note: TWINE_PASSWORD is set in Travis settings
     - CIBW_BUILD=cp3?-*
-    - CIBW_SKIP=cp33-* cp34-* cp-35*
-    - CIBW_BEFORE_BUILD=cd {project}/brambox && make build cython=1 debug=0
+    - CIBW_SKIP="cp33-* cp34-* cp-35*"
+    - CIBW_BEFORE_BUILD="cd {project}/brambox && make build cython=1 debug=0"
 
 script:
   - $PIP install cibuildwheel==0.11.1
