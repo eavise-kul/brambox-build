@@ -1,12 +1,15 @@
+# Needed to build Cython
+os: Visual Studio 2015
+
 environment:
   TWINE_USERNAME: 0phoff
 
   matrix:
     - CIBW_BUILD: cp36-*
-      CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {project} && python setup.py build_ext --inplace --compiler=msvc
+      CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {project} && set CYTHON=1 && set CFLAGS=-O3 && set CDEBUG=0 && python setup.py build_ext --inplace --compiler=msvc
 
     - CIBW_BUILD: cp37-*
-      CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {project} && python setup.py build_ext --inplace --compiler=mscv
+      CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {project} && set CYTHON=1 && set CFLAGS=-O3 && set CDEBUG=0 && python setup.py build_ext --inplace --compiler=mscv
 
 
 install:
