@@ -16,7 +16,7 @@ env:
       # Note: TWINE_PASSWORD is set in Travis settings
     - CIBW_BUILD="cp3?-*"
     - CIBW_SKIP="cp33-* cp34-* cp35-*"
-    - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && pip install -r develop.txt && make build cython=1 debug=0"
+    - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && make build cython=1 debug=0"
 
 script:
   - $PIP install cibuildwheel==0.11.1
