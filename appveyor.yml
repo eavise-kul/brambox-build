@@ -3,10 +3,10 @@ environment:
 
   matrix:
     - CIBW_BUILD: cp36-*
-      CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {project} && set CYTHON=1 && set CFLAGS=-O3 && set CDEBUG=0 && python setup.py clean --all && python setup.py build_ext --force --inplace --compiler=mscv && set CYTHON= && set CFLAGS= && set CDEBUG=
+      CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {project} && set CYTHON=1 && set CFLAGS=-O3 && set CDEBUG=0 && python setup.py clean --all && python setup.py build_ext --force --compiler=mscv && set CYTHON= && set CFLAGS= && set CDEBUG=
 
     - CIBW_BUILD: cp37-*
-      CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {project} && set CYTHON=1 && set CFLAGS=-O3 && set CDEBUG=0 && python setup.py clean --all && python setup.py build_ext --force --inplace --compiler=mscv && set CYTHON= && set CFLAGS= && set CDEBUG=
+      CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {project} && set CYTHON=1 && set CFLAGS=-O3 && set CDEBUG=0 && python setup.py clean --all && python setup.py build_ext --force --compiler=mscv && set CYTHON= && set CFLAGS= && set CDEBUG=
 
 
 install:
