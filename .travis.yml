@@ -53,7 +53,8 @@ after_success:
   - python -m pip install twine
   - python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
   - |
-    [ -z "$UPLOAD_SDIST" ] && python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ brambox/dist/*.tar.gz
+    echo $UPLOAD_SDIST
+    [ -z ${UPLOAD_SDIST+x} ] && python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ brambox/dist/*.tar.gz
   - |
     if [[ $TRAVIS_TAG ]]; then
       python -m twine upload wheelhouse/*.whl
