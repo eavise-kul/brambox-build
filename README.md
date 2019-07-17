@@ -1,4 +1,4 @@
-<img src="brambox/docs/.static/logo-wide.png" alt="Logo" width="1000" />
+<img src="https://gitlab.com/EAVISE/brambox/raw/master/docs/.static/logo-wide.png" alt="Logo" width="1000" />
 
 _Brambox build repository_
 
