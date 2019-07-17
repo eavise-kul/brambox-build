@@ -5,6 +5,7 @@ matrix:
     - name: "Linux py3.6"
       sudo: required
       language: python
+      python: 3.6
       services:
         - docker
       env:
@@ -47,6 +48,8 @@ script:
   # Build wheels
   - $PIP install cibuildwheel==0.11.1
   - cibuildwheel --output-dir wheelhouse brambox/
+  - |
+    [ -n ${UPLOAD_SDIST+x} ] && cd brambox && python setup.py sdist
 
 after_success:
   # Upload to PyPi
