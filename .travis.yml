@@ -68,6 +68,7 @@ after_success:
       python -m twine check dist/*.tar.gz
       python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz
       cd ..
+
     fi
   - |
     if [[ $TRAVIS_TAG ]]; then
