@@ -65,8 +65,6 @@ after_success:
   - |
     if [[ $UPLOAD_SDIST ]]; then
       cd brambox
-      tar -xf dist/*.tar.gz -C /tmp
-      cat /tmp/brambox*/PKG-INFO
       python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz
       cd ..
     fi
