@@ -54,6 +54,7 @@ script:
   - |
     if [[ $UPLOAD_SDIST ]]; then
       cd brambox
+      cat brambox.egg-info/PKG-INFO
       python setup.py sdist
       cd ..
     fi
