@@ -65,6 +65,7 @@ after_success:
   - |
     if [[ $UPLOAD_SDIST ]]; then
       cd brambox
+      cat brambox.egg-info/PKG-INFO
       python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz
       cd ..
     fi
@@ -73,7 +74,6 @@ after_success:
       python -m twine upload wheelhouse/*.whl
       if [[ $UPLOAD_SDIST ]]; then
         cd brambox
-        cat brambox.egg-info/PKG-INFO
         python -m twine upload --skip-existing dist/*.tar.gz
         cd ..
       fi
