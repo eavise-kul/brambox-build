@@ -12,7 +12,7 @@ matrix:
         - PIP=pip
         - CIBW_BUILD="cp36-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
-        - UPLOAD_SDIST=1
+        - UPLOAD_SDIST="true"
 
     - name: "Linux py3.7"
       sudo: required
@@ -23,6 +23,7 @@ matrix:
         - PIP=pip
         - CIBW_BUILD="cp37-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=""
 
     - name: "MacOS py3.6"
       os: osx
@@ -31,6 +32,7 @@ matrix:
         - PIP=pip2
         - CIBW_BUILD="cp36-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=""
 
     - name: "MacOS py3.7"
       os: osx
@@ -39,6 +41,7 @@ matrix:
         - PIP=pip2
         - CIBW_BUILD="cp37-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=""
 
 env:
   global:
@@ -49,19 +52,25 @@ script:
   - $PIP install cibuildwheel==0.11.1
   - cibuildwheel --output-dir wheelhouse brambox/
   - |
-    [ -n ${UPLOAD_SDIST+x} ] && cd brambox && python setup.py sdist
+    if [[ $UPLOAD_SDIST ]]; then
+      cd brambox && python setup.py sdist
+    fi
 
 after_success:
   # Upload to PyPi
   - python -m pip install twine
   - python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
   - |
-    ls brambox
-    ls brambox/dist
-    [ -n ${UPLOAD_SDIST+x} ] && python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ brambox/dist/*.tar.gz
+    if [[ $UPLOAD_SDIST ]]; then
+      ls brambox
+      ls brambox/dist
+      python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ brambox/dist/*.tar.gz
+    fi
   - |
     if [[ $TRAVIS_TAG ]]; then
       python -m twine upload wheelhouse/*.whl
-      [ -n ${UPLOAD_SDIST+x} ] && python -m twine upload --skip-existing brambox/dist/*.tar.gz
+      if [[ $UPLOAD_SDIST ]]; then
+        python -m twine upload --skip-existing brambox/dist/*.tar.gz
+      fi
     fi
 
