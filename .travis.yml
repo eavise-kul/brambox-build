@@ -11,6 +11,7 @@ matrix:
         - PIP=pip
         - CIBW_BUILD="cp36-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=1
 
     - name: "Linux py3.7"
       sudo: required
@@ -43,8 +44,17 @@ env:
     - TWINE_USERNAME=0phoff
 
 script:
+  # Build wheels
   - $PIP install cibuildwheel==0.11.1
   - cibuildwheel --output-dir wheelhouse brambox/
+
+after_success:
+  # Upload to PyPi
+  - python -m pip install twine
+  - python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
+  - [ -z "$UPLOAD_SDIST" ] && python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ brambox/dist/*.tar.gz
   - |
-    python -m pip install twine
-    python -m twine upload wheelhouse/*.whl
+    if [[ $TRAVIS_TAG ]]; then
+      python -m twine upload wheelhouse/*.whl
+      [ -z "$UPLOAD_SDIST" ] && python -m twine upload --skip-existing brambox/dist/*.tar.gz
+    fi
