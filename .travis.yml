@@ -9,6 +9,7 @@ matrix:
       services:
         - docker
       env:
+        - PYTHON=python
         - PIP=pip
         - CIBW_BUILD="cp36-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
@@ -20,6 +21,7 @@ matrix:
       services:
         - docker
       env:
+        - PYTHON=python
         - PIP=pip
         - CIBW_BUILD="cp37-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
@@ -29,6 +31,7 @@ matrix:
       os: osx
       language: generic
       env: 
+        - PYTHON=python2
         - PIP=pip2
         - CIBW_BUILD="cp36-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
@@ -38,6 +41,7 @@ matrix:
       os: osx
       language: generic
       env: 
+        - PYTHON=python2
         - PIP=pip2
         - CIBW_BUILD="cp37-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
@@ -50,6 +54,7 @@ env:
 script:
   # Build wheels
   - $PIP install cibuildwheel==0.11.1
+  - $PIP install --update wheel setuptools
   - cibuildwheel --output-dir wheelhouse brambox/
   - |
     if [[ $UPLOAD_SDIST ]]; then
@@ -60,20 +65,20 @@ script:
 
 after_success:
   # Upload to PyPi
-  - python -m pip install twine
-  - python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
+  - $PIP install --update twine
+  - $PYTHON -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
   - |
     if [[ $UPLOAD_SDIST ]]; then
       cd brambox
-      python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz
+      $PYTHON -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz
       cd ..
     fi
   - |
     if [[ $TRAVIS_TAG ]]; then
-      python -m twine upload wheelhouse/*.whl
+      $PYTHON -m twine upload wheelhouse/*.whl
       if [[ $UPLOAD_SDIST ]]; then
         cd brambox
-        python -m twine upload --skip-existing dist/*.tar.gz
+        $PYTHON -m twine upload --skip-existing dist/*.tar.gz
         cd ..
       fi
     fi
