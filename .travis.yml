@@ -53,7 +53,9 @@ script:
   - cibuildwheel --output-dir wheelhouse brambox/
   - |
     if [[ $UPLOAD_SDIST ]]; then
-      cd brambox && python setup.py sdist
+      cd brambox
+      python setup.py sdist
+      cd ..
     fi
 
 after_success:
@@ -62,8 +64,6 @@ after_success:
   - python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
   - |
     if [[ $UPLOAD_SDIST ]]; then
-      ls brambox
-      ls brambox/dist
       python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ brambox/dist/*.tar.gz
     fi
   - |
