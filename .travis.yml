@@ -64,13 +64,17 @@ after_success:
   - python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
   - |
     if [[ $UPLOAD_SDIST ]]; then
-      python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ brambox/dist/*.tar.gz
+      cd brambox
+      python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz
+      cd ..
     fi
   - |
     if [[ $TRAVIS_TAG ]]; then
       python -m twine upload wheelhouse/*.whl
       if [[ $UPLOAD_SDIST ]]; then
-        python -m twine upload --skip-existing brambox/dist/*.tar.gz
+        cd brambox
+        python -m twine upload --skip-existing dist/*.tar.gz
+        cd ..
       fi
     fi
 
