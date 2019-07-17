@@ -48,7 +48,7 @@ script:
   - $PIP install cibuildwheel==0.11.1
   - cibuildwheel --output-dir wheelhouse brambox/
 
-deploy:
+after_success:
   # Upload to PyPi
   - python -m pip install twine
   - python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
