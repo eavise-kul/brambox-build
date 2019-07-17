@@ -54,7 +54,7 @@ env:
 script:
   # Build wheels
   - $PIP install cibuildwheel==0.11.1
-  - $PIP install --update wheel setuptools
+  - $PIP install -U wheel setuptools
   - cibuildwheel --output-dir wheelhouse brambox/
   - |
     if [[ $UPLOAD_SDIST ]]; then
@@ -65,7 +65,7 @@ script:
 
 after_success:
   # Upload to PyPi
-  - $PIP install --update twine
+  - $PIP install -U twine
   - $PYTHON -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
   - |
     if [[ $UPLOAD_SDIST ]]; then
