@@ -4,8 +4,8 @@ _Brambox build repository_
 
 ![Version][version-badge]
 [![Wheel][wheel-badge]][wheel-url]
-![Travis][travis-badge]
-![Appveyor][appveyor-badge]
+[![Travis][travis-badge]][travis-url]
+[![Appveyor][appveyor-badge]][appveyor-url]
 
 This repository is responsible for building the brambox pip wheels and uploading them to PyPi.  
 It uses the [cibuildwheel](https://github.com/joerick/cibuildwheel) package to generate wheels on travis (linux, macOS) and appveyor (Windows).
@@ -27,4 +27,6 @@ This will rebuild the wheels and actually push them to [PyPi](https://pypi.org/p
 [wheel-badge]: https://img.shields.io/pypi/wheel/brambox.svg
 [wheel-url]: https://pypi.org/project/brambox
 [travis-badge]: https://img.shields.io/travis/eavise-kul/brambox-build.svg?label=travis
+[travis-url]: https://travis-ci.org/eavise-kul/brambox-build
 [appveyor-badge]: https://img.shields.io/appveyor/ci/0phoff/brambox-build.svg?label=appveyor
+[appveyor-url]: https://ci.appveyor.com/project/0phoff/brambox-build
