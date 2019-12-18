@@ -20,7 +20,7 @@ build_script:
   - pip install cibuildwheel==0.11.1
   - cibuildwheel --output-dir wheelhouse brambox/
   - python -m pip install twine
-  - python -m twine update --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
+  - python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
   - >
     IF "%APPVEYOR_REPO_TAG%" == "true"
     (
