@@ -2,7 +2,7 @@
 
 _Brambox build repository_
 
-![Version][version-badge]
+[![Version][version-badge]][pypi-url]
 [![Wheel][wheel-badge]][wheel-url]
 [![Travis][travis-badge]][travis-url]
 [![Appveyor][appveyor-badge]][appveyor-url]
@@ -24,6 +24,7 @@ This will rebuild the wheels and actually push them to [PyPi](https://pypi.org/p
 
 
 [version-badge]: https://img.shields.io/pypi/v/brambox.svg?label=version
+[pypi-url]: https://pypi.org/project/brambox/
 [wheel-badge]: https://img.shields.io/pypi/wheel/brambox.svg
 [wheel-url]: https://pypi.org/project/brambox
 [travis-badge]: https://img.shields.io/travis/eavise-kul/brambox-build.svg?label=travis
