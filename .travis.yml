@@ -2,15 +2,13 @@ language: python
 
 matrix:
   include:
+    # LINUX
     - name: "Linux py3.6"
       sudo: required
       language: python
       python: 3.6
-      services:
-        - docker
+      services: docker
       env:
-        - PYTHON=python
-        - PIP=pip
         - CIBW_BUILD="cp36-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
@@ -18,11 +16,9 @@ matrix:
     - name: "Linux py3.7"
       sudo: required
       language: python
-      services:
-        - docker
+      python: 3.7
+      services: docker
       env:
-        - PYTHON=python
-        - PIP=pip
         - CIBW_BUILD="cp37-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
@@ -30,41 +26,105 @@ matrix:
     - name: "Linux py3.8"
       sudo: required
       language: python
-      services:
-        - docker
+      python: 3.8
+      services: docker
       env:
-        - PYTHON=python
-        - PIP=pip
         - CIBW_BUILD="cp38-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {project} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
+    # ARMv8
+    - name: "ARMv8 py3.6"
+      arch: arm64
+      sudo: required
+      language: python
+      python: 3.6
+      services: docker
+      env:
+        - CIBW_BUILD="cp36-*"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=""
+
+    - name: "ARMv8 py3.7"
+      arch: arm64
+      sudo: required
+      language: python
+      python: 3.7
+      services: docker
+      env:
+        - CIBW_BUILD="cp37-*"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=""
+
+    - name: "ARMv8 py3.8"
+      arch: arm64
+      sudo: required
+      language: python
+      python: 3.8
+      services: docker
+      env:
+        - CIBW_BUILD="cp38-*"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=""
+
+    # MacOS
     - name: "MacOS py3.6"
       os: osx
-      language: generic
+      language: shell
       env: 
-        - PYTHON=python2
-        - PIP=pip2
         - CIBW_BUILD="cp36-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "MacOS py3.7"
       os: osx
-      language: generic
+      language: shell
       env: 
-        - PYTHON=python2
-        - PIP=pip2
         - CIBW_BUILD="cp37-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "MacOS py3.8"
       os: osx
-      language: generic
+      language: shell
       env: 
-        - PYTHON=python2
-        - PIP=pip2
+        - CIBW_BUILD="cp38-*"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=""
+
+    # Windows
+    - name: "Windows py3.6"
+      os: windows
+      language: shell
+      before_install:
+        - choco install python --version 3.6.0
+        - export PATH="/c/Python36:/c/Python36/Scripts:$PATH"
+        - ln -s /c/Python36/python.exe /c/Python36/python3.exe
+      env:
+        - CIBW_BUILD="cp36-*"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=""
+
+    - name: "Windows py3.7"
+      os: windows
+      language: shell
+      before_install:
+        - choco install python --version 3.7.0
+        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+        - ln -s /c/Python37/python.exe /c/Python37/python3.exe
+      env:
+        - CIBW_BUILD="cp37-*"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
+        - UPLOAD_SDIST=""
+
+    - name: "Windows py3.8"
+      os: windows
+      language: shell
+      before_install:
+        - choco install python --version 3.8.0
+        - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
+        - ln -s /c/Python38/python.exe /c/Python38/python3.exe
+      env:
         - CIBW_BUILD="cp38-*"
         - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {project} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
@@ -73,11 +133,12 @@ env:
   global:
     - TWINE_USERNAME=0phoff
 
+install:
+  - git submodule update --init --recursive
+  - python3 -m pip install cibuildwheel==1.5.5
+
 script:
-  # Build wheels
-  - $PIP install cibuildwheel==1.1.0
-  - $PIP install -U wheel setuptools
-  - cibuildwheel --output-dir wheelhouse brambox/
+  - python3 -m cibuildwheel --output-dir wheelhouse brambox/
   - |
     if [[ $UPLOAD_SDIST ]]; then
       cd brambox
@@ -86,21 +147,20 @@ script:
     fi
 
 after_success:
-  # Upload to PyPi
-  - $PIP install -U twine
-  - $PYTHON -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
+  - python3 -m pip install -U twine
+  - python3 -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
   - |
     if [[ $UPLOAD_SDIST ]]; then
       cd brambox
-      $PYTHON -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz
+      python3 -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz
       cd ..
     fi
   - |
     if [[ $TRAVIS_TAG ]]; then
-      $PYTHON -m twine upload wheelhouse/*.whl
+      python3 -m twine upload wheelhouse/*.whl
       if [[ $UPLOAD_SDIST ]]; then
         cd brambox
-        $PYTHON -m twine upload --skip-existing dist/*.tar.gz
+        python3 -m twine upload --skip-existing dist/*.tar.gz
         cd ..
       fi
     fi
