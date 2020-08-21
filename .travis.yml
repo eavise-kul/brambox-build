@@ -9,7 +9,7 @@ matrix:
       services: docker
       env:
         - CIBW_BUILD="cp36-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {package} && pwd && ls ."
+        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "Linux py3.7"
@@ -18,7 +18,7 @@ matrix:
       services: docker
       env:
         - CIBW_BUILD="cp37-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "Linux py3.8"
@@ -27,7 +27,7 @@ matrix:
       services: docker
       env:
         - CIBW_BUILD="cp38-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     # ARMv8
@@ -38,7 +38,7 @@ matrix:
       services: docker
       env:
         - CIBW_BUILD="cp36-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "ARMv8 py3.7"
@@ -48,7 +48,7 @@ matrix:
       services: docker
       env:
         - CIBW_BUILD="cp37-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "ARMv8 py3.8"
@@ -58,7 +58,7 @@ matrix:
       services: docker
       env:
         - CIBW_BUILD="cp38-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     # MacOS
@@ -67,7 +67,7 @@ matrix:
       language: shell
       env: 
         - CIBW_BUILD="cp36-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "MacOS py3.7"
@@ -75,7 +75,7 @@ matrix:
       language: shell
       env: 
         - CIBW_BUILD="cp37-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "MacOS py3.8"
@@ -83,7 +83,7 @@ matrix:
       language: shell
       env: 
         - CIBW_BUILD="cp38-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     # Windows
@@ -96,7 +96,7 @@ matrix:
         - ln -s /c/Python36/python.exe /c/Python36/python3.exe
       env:
         - CIBW_BUILD="cp36-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "Windows py3.7"
@@ -108,7 +108,7 @@ matrix:
         - ln -s /c/Python37/python.exe /c/Python37/python3.exe
       env:
         - CIBW_BUILD="cp37-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.14.6 cython==0.28.3 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "Windows py3.8"
@@ -120,7 +120,7 @@ matrix:
         - ln -s /c/Python38/python.exe /c/Python38/python3.exe
       env:
         - CIBW_BUILD="cp38-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {project} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.17.5 cython==0.29.14 && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
 env:
