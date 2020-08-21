@@ -4,16 +4,14 @@ matrix:
   include:
     # LINUX
     - name: "Linux py3.6"
-      sudo: required
       python: 3.6
       services: docker
       env:
         - CIBW_BUILD="cp36-*"
-        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && cd {package} && make build cython=1 debug=0"
+        - CIBW_BEFORE_BUILD="pip install numpy==1.13.3 cython==0.28.2 && /{project}/install_minversion.py && cd {package} && make build cython=1 debug=0"
         - UPLOAD_SDIST=""
 
     - name: "Linux py3.7"
-      sudo: required
       python: 3.7
       services: docker
       env:
@@ -22,7 +20,6 @@ matrix:
         - UPLOAD_SDIST=""
 
     - name: "Linux py3.8"
-      sudo: required
       python: 3.8
       services: docker
       env:
@@ -33,7 +30,6 @@ matrix:
     # ARMv8
     - name: "ARMv8 py3.6"
       arch: arm64
-      sudo: required
       python: 3.6
       services: docker
       env:
@@ -43,7 +39,6 @@ matrix:
 
     - name: "ARMv8 py3.7"
       arch: arm64
-      sudo: required
       python: 3.7
       services: docker
       env:
@@ -53,7 +48,6 @@ matrix:
 
     - name: "ARMv8 py3.8"
       arch: arm64
-      sudo: required
       python: 3.8
       services: docker
       env:
