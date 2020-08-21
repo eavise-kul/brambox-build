@@ -29,5 +29,5 @@ if __name__ == '__main__':
     #args = parser.parse_args()
 
     print('ENV\n===')
-    print('\n'.join(os.environ.keys()))
+    print('\n'.join([f'{k}={v}' for k,v in os.environ.items()]))
     print('===')
