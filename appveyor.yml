@@ -27,6 +27,7 @@ init:
 
 install:
   - git submodule update --init --recursive
+  - python -m pip install -U pip
   - python -m pip install cibuildwheel==1.5.5
 
 build_script:
