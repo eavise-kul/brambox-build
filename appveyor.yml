@@ -1,0 +1,31 @@
+# Needed to build Cython
+os: Visual Studio 2015
+
+environment:
+  TWINE_USERNAME: 0phoff
+
+  matrix:
+    - CIBW_BUILD: cp36-*
+      CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {package} && set CYTHON=1 && set CFLAGS=-O3 && set CDEBUG=0 && python setup.py build_ext --inplace
+
+    - CIBW_BUILD: cp37-*
+      CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {package} && set CYTHON=1 && set CFLAGS=-O3 && set CDEBUG=0 && python setup.py build_ext --inplace
+
+    - CIBW_BUILD: cp38-*
+      CIBW_BEFORE_BUILD: pip install numpy==1.17.5 cython==0.29.14 && cd {package} && set CYTHON=1 && set CFLAGS=-O3 && set CDEBUG=0 && python setup.py build_ext --inplace
+
+
+install:
+  git submodule update --init --recursive
+
+
+build_script:
+  - pip install cibuildwheel==1.5.5
+  - cibuildwheel --output-dir wheelhouse brambox/
+  - python -m pip install twine
+  - python -m twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl
+  - IF "%APPVEYOR_REPO_TAG%" == "true" (python -m twine upload --skip-existing wheelhouse/*.whl)
+
+artifacts:
+  - path: "wheelhouse\\*.whl"
+    name: Wheels
