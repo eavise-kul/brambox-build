@@ -13,6 +13,7 @@ It uses the [cibuildwheel](https://github.com/joerick/cibuildwheel) package to g
 ## Usage
 Whenever there is a new brambox version, pull it in the _brambox_ submodule with:
 ``` bash
+git submodule update
 cd brambox
 git checkout <tag name>
 ```
