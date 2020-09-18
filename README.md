@@ -19,8 +19,17 @@ git checkout <tag name>
 ```
 
 Push these new changes to this repository, which will try to generate wheels for it and upload them to the [PyPi test servers](https://test.pypi.org/project/brambox/).  
+Try installing the new build in a a new python environment.
+``` bash
+cd ~
+mkvirtualenv -p python3.6 bramboxtest
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple brambox
+deactivate
+rmvirtualenv bramboxtest
+cd -
+```
 
-If everything seems in order (you might want to test installing the package from these test servers), create a new tag on this repository and push it.
+If everything seems in order, create a new tag on this repository and push it.
 This will rebuild the wheels and actually push them to [PyPi](https://pypi.org/project/brambox/).
 
 
