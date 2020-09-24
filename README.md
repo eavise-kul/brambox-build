@@ -15,6 +15,7 @@ Whenever there is a new brambox version, pull it in the _brambox_ submodule with
 ``` bash
 git submodule update
 cd brambox
+git fetch
 git checkout <tag name>
 ```
 
