@@ -28,6 +28,11 @@ Try installing the new build in a a new python environment.
 If everything seems in order, create a new tag on this repository and push it.
 This will rebuild the wheels and actually push them to [PyPi](https://pypi.org/project/brambox/).
 
+``` bash
+git tag 'vX.Y.Z'
+git push --tags
+```
+
 
 [version-badge]: https://img.shields.io/pypi/v/brambox.svg?label=version
 [pypi-url]: https://pypi.org/project/brambox/
