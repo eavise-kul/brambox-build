@@ -1,0 +1,195 @@
+name: Build
+on: [push, pull_request]
+env:
+  CIBW_ENVIRONMENT: CYTHON='1' CDEBUG='0'
+  CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+  CIBW_MANYLINUX_I686_IMAGE: manylinux2014
+  CIBW_MANYLINUX_PYPY_X86_64_IMAGE: manylinux2014
+  CIBW_MANYLINUX_PYPY_I686_IMAGE: manylinux2014
+
+jobs:
+
+  ######################################
+  # JOB
+  # Build binary wheels
+  ######################################
+  build_wheels:
+    name: Build wheel for cp${{ matrix.python }}-${{ matrix.platform_id }}-${{ matrix.manylinux_image }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        architecture: [auto]
+        include:
+          - os: ubuntu-latest
+            architecture: aarch64
+
+    steps:
+      - name: Set up QEMU
+        if: matrix.architecture == "aarch64"
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: arm64
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel==2.3.1
+
+      - name: Build wheels for CPython 3.6
+        run: |
+          python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_BUILD: "cp36-*"
+          CIBW_ARCHS: ${{ matrix.architecture }}
+          CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {package} && python setup.py build_ext --force --inplace
+
+      - name: Build wheels for CPython 3.7
+        run: |
+          python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_BUILD: "cp37-*"
+          CIBW_ARCHS: ${{ matrix.architecture }}
+          CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {package} && python setup.py build_ext --force --inplace
+
+      - name: Build wheels for CPython 3.8
+        run: |
+          python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_BUILD: "cp38-*"
+          CIBW_ARCHS: ${{ matrix.architecture }}
+          CIBW_BEFORE_BUILD: pip install numpy==1.17.5 cython==0.29.14 && cd {package} && python setup.py build_ext --force --inplace
+
+      - name: Build wheels for CPython 3.9
+        run: |
+          python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_BUILD: "cp39-*"
+          CIBW_ARCHS: ${{ matrix.architecture }}
+          CIBW_BEFORE_BUILD: pip install numpy==1.19.3 cython==0.29.21 && cd {package} && python setup.py build_ext --force --inplace
+
+      - name: Build wheels for CPython 3.10
+        run: |
+          python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_BUILD: "cp310-*"
+          CIBW_ARCHS: ${{ matrix.architecture }}
+          CIBW_BEFORE_BUILD: pip install numpy==1.21.2 cython==0.29.25 && cd {package} && python setup.py build_ext --force --inplace
+
+      - name: Store artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact
+          path: wheelhouse/*.whl
+
+  ######################################
+  # JOB
+  # Build linux source distribution
+  ######################################
+  build_sdist:
+    name: Source distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+
+      - name: Build sdist
+        run: |
+          python -m venv build_env
+          source build_env/bin/activate
+          python -m pip install numpy==1.13.3 cython==0.28.2
+          python setup.py sdist
+
+      - name: Store artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact
+          path: dist/*.tar.gz
+
+  ######################################
+  # JOB
+  # Upload Test PyPI
+  ######################################
+  upload_test_pypi:
+    name: Upload wheels and source distribution to the Test PyPI servers
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    if: github.event_name == "push" && startsWith(github.event.ref, "refs/heads/master")
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: dist
+
+      - name: Upload PyPI
+        uses: pypa/gh-action-pypi-publish@v1.5.0
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+          skip_existing: true
+          verbose: true
+
+  ######################################
+  # JOB
+  # Upload PyPI
+  ######################################
+  upload_pypi:
+    name: Upload wheels and source distribution to the PyPI servers
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    if: github.event_name == "push" && startsWith(github.event.ref, "refs/tags/v")
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: dist
+
+      - name: Upload PyPI
+        uses: pypa/gh-action-pypi-publish@v1.5.0
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          verbose: true
+
+  ######################################
+  # JOB
+  # Test PyPi install
+  ######################################
+  test_pypi:
+    name: Install and run brambox from wheels of the Test PyPI servers
+    needs: [upload_test_pypi]
+    strategy:
+      fail-fast: false
+      os: [ubuntu-latest, windows-latest, macos-latest]
+      python: [3.6, 3.7, 3.8, 3.9, 3.10]
+
+    steps:
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install package
+        run: |
+          python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple brambox
+          python -c "import brambox as bb; print(f'Brambox Version {bb.__version__}')"
