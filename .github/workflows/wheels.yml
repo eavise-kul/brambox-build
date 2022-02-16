@@ -14,7 +14,7 @@ jobs:
   # Build binary wheels
   ######################################
   build_wheels:
-    name: Build wheel for cp${{ matrix.python }}-${{ matrix.platform_id }}-${{ matrix.manylinux_image }}
+    name: Build wheel for ${{ matrix.os }} - ${{ matrix.architecture }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
