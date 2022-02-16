@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Set up QEMU
-        if: matrix.architecture == "aarch64"
+        if: matrix.architecture == 'aarch64'
         uses: docker/setup-qemu-action@v1
         with:
           platforms: arm64
@@ -49,7 +49,7 @@ jobs:
         run: |
           python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_BUILD: "cp36-*"
+          CIBW_BUILD: 'cp36-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
           CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {package} && python setup.py build_ext --force --inplace
 
@@ -57,7 +57,7 @@ jobs:
         run: |
           python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_BUILD: "cp37-*"
+          CIBW_BUILD: 'cp37-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
           CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {package} && python setup.py build_ext --force --inplace
 
@@ -65,7 +65,7 @@ jobs:
         run: |
           python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_BUILD: "cp38-*"
+          CIBW_BUILD: 'cp38-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
           CIBW_BEFORE_BUILD: pip install numpy==1.17.5 cython==0.29.14 && cd {package} && python setup.py build_ext --force --inplace
 
@@ -73,7 +73,7 @@ jobs:
         run: |
           python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_BUILD: "cp39-*"
+          CIBW_BUILD: 'cp39-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
           CIBW_BEFORE_BUILD: pip install numpy==1.19.3 cython==0.29.21 && cd {package} && python setup.py build_ext --force --inplace
 
@@ -81,7 +81,7 @@ jobs:
         run: |
           python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_BUILD: "cp310-*"
+          CIBW_BUILD: 'cp310-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
           CIBW_BEFORE_BUILD: pip install numpy==1.21.2 cython==0.29.25 && cd {package} && python setup.py build_ext --force --inplace
 
@@ -129,7 +129,7 @@ jobs:
     name: Upload wheels and source distribution to the Test PyPI servers
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    if: github.event_name == "push" && startsWith(github.event.ref, "refs/heads/master")
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/master')
 
     steps:
       - name: Download artifacts
@@ -155,7 +155,7 @@ jobs:
     name: Upload wheels and source distribution to the PyPI servers
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    if: github.event_name == "push" && startsWith(github.event.ref, "refs/tags/v")
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
 
     steps:
       - name: Download artifacts
