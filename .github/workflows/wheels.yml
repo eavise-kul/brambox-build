@@ -110,15 +110,14 @@ jobs:
 
       - name: Build sdist
         run: |
-          cd brambox/
           python -m pip install numpy==1.13.3 cython==0.28.2
-          python setup.py sdist
+          cd brambox && python setup.py sdist
 
       - name: Store artifacts
         uses: actions/upload-artifact@v2
         with:
           name: build-artifact
-          path: dist/*.tar.gz
+          path: brambox/dist/*.tar.gz
 
   ######################################
   # JOB
