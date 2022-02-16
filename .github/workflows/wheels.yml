@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        architecture: [auto]
+        architecture: [native]
         include:
           - os: ubuntu-latest
             architecture: aarch64
