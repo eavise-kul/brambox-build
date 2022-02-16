@@ -47,7 +47,7 @@ jobs:
 
       - name: Build wheels for CPython 3.6
         run: |
-          python -m cibuildwheel --output-dir wheelhouse
+          python -m cibuildwheel --output-dir wheelhouse brambox/
         env:
           CIBW_BUILD: 'cp36-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
@@ -55,7 +55,7 @@ jobs:
 
       - name: Build wheels for CPython 3.7
         run: |
-          python -m cibuildwheel --output-dir wheelhouse
+          python -m cibuildwheel --output-dir wheelhouse brambox/
         env:
           CIBW_BUILD: 'cp37-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
@@ -63,7 +63,7 @@ jobs:
 
       - name: Build wheels for CPython 3.8
         run: |
-          python -m cibuildwheel --output-dir wheelhouse
+          python -m cibuildwheel --output-dir wheelhouse brambox/
         env:
           CIBW_BUILD: 'cp38-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
@@ -71,7 +71,7 @@ jobs:
 
       - name: Build wheels for CPython 3.9
         run: |
-          python -m cibuildwheel --output-dir wheelhouse
+          python -m cibuildwheel --output-dir wheelhouse brambox/
         env:
           CIBW_BUILD: 'cp39-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
@@ -79,7 +79,7 @@ jobs:
 
       - name: Build wheels for CPython 3.10
         run: |
-          python -m cibuildwheel --output-dir wheelhouse
+          python -m cibuildwheel --output-dir wheelhouse brambox/
         env:
           CIBW_BUILD: 'cp310-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
