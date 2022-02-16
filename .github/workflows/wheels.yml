@@ -51,7 +51,7 @@ jobs:
         env:
           CIBW_BUILD: 'cp36-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
-          CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.28.2 && cd {package} && python setup.py build_ext --force --inplace
+          CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython==0.29.1 && cd {package} && python setup.py build_ext --force --inplace
 
       - name: Build wheels for CPython 3.7
         run: |
@@ -59,7 +59,7 @@ jobs:
         env:
           CIBW_BUILD: 'cp37-*'
           CIBW_ARCHS: ${{ matrix.architecture }}
-          CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {package} && python setup.py build_ext --force --inplace
+          CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.29.1 && cd {package} && python setup.py build_ext --force --inplace
 
       - name: Build wheels for CPython 3.8
         run: |
