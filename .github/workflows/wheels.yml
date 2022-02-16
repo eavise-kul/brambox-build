@@ -110,8 +110,7 @@ jobs:
 
       - name: Build sdist
         run: |
-          python -m venv build_env
-          source build_env/bin/activate
+          cd brambox/
           python -m pip install numpy==1.13.3 cython==0.28.2
           python setup.py sdist
 
