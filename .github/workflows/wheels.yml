@@ -177,7 +177,7 @@ jobs:
   # Test PyPi install
   ######################################
   test_pypi:
-    name: Install and run brambox from wheels of the Test PyPI servers
+    name: Test wheels
     needs: [upload_test_pypi]
     runs-on: ${{ matrix.os }}
     strategy:
