@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        architecture: [native]
+        architecture: [auto]
         include:
           - os: ubuntu-latest
             architecture: aarch64
@@ -127,7 +127,7 @@ jobs:
   # Upload Test PyPI
   ######################################
   upload_test_pypi:
-    name: Upload wheels and source distribution to the Test PyPI servers
+    name: Upload test PyPI servers
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/master')
@@ -153,7 +153,7 @@ jobs:
   # Upload PyPI
   ######################################
   upload_pypi:
-    name: Upload wheels and source distribution to the PyPI servers
+    name: Upload PyPI servers
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
