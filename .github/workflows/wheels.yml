@@ -13,7 +13,8 @@ jobs:
   # Build binary wheels
   ######################################
   build_wheels:
-    name: Build wheel for ${{ matrix.os }} - ${{ matrix.architecture }}
+    name: Build wheel ${{ matrix.os }} - ${{ matrix.python }} - ${{ matrix.architecture }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -25,7 +26,6 @@ jobs:
             architecture: aarch64
           - os: macos-latest
             architecture: aarch64
-    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Set up QEMU
@@ -66,7 +66,7 @@ jobs:
   # Build linux source distribution
   ######################################
   build_sdist:
-    name: Source distribution
+    name: Build source
     runs-on: ubuntu-latest
 
     steps:
@@ -98,8 +98,8 @@ jobs:
   ######################################
   upload_test_pypi:
     name: Upload test PyPI servers
-    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
+    needs: [build_wheels, build_sdist]
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/heads/master')
 
     steps:
@@ -124,8 +124,8 @@ jobs:
   ######################################
   upload_pypi:
     name: Upload PyPI servers
-    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
+    needs: [build_wheels, build_sdist]
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
 
     steps:
@@ -147,14 +147,14 @@ jobs:
   # Test PyPi install
   ######################################
   test_pypi:
-    name: Test wheels
+    name: Test wheel ${{ matrix.os }} - ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
     needs: [upload_test_pypi]
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: [3.6, 3.7, 3.8, 3.9, 3.10]
-    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Setup python
