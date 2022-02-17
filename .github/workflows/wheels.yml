@@ -1,7 +1,6 @@
 name: Build
 on: [push, pull_request]
 env:
-  CIBW_ENVIRONMENT: CYTHON='1' CDEBUG='0'
   CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
   CIBW_MANYLINUX_I686_IMAGE: manylinux2014
   CIBW_MANYLINUX_PYPY_X86_64_IMAGE: manylinux2014
@@ -15,15 +14,18 @@ jobs:
   ######################################
   build_wheels:
     name: Build wheel for ${{ matrix.os }} - ${{ matrix.architecture }}
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        architecture: [auto]
-        include:
-          - os: ubuntu-latest
+        architecture: [auto, aarch64]
+        python: [36, 37, 38, 39, 310]
+        exclude:
+          - os: windows-latest
             architecture: aarch64
+          - os: macos-latest
+            architecture: aarch64
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Set up QEMU
@@ -45,45 +47,13 @@ jobs:
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.3.1
 
-      - name: Build wheels for CPython 3.6
+      - name: Build wheels for CPython ${{ matrix.python }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse brambox/
         env:
-          CIBW_BUILD: 'cp36-*'
+          CIBW_BUILD: ${{ format('cp{0}-*', matrix.python) }}
           CIBW_ARCHS: ${{ matrix.architecture }}
-          CIBW_BEFORE_BUILD: pip install numpy==1.13.3 cython && cd {package} && python setup.py build_ext --force --inplace
-
-      - name: Build wheels for CPython 3.7
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse brambox/
-        env:
-          CIBW_BUILD: 'cp37-*'
-          CIBW_ARCHS: ${{ matrix.architecture }}
-          CIBW_BEFORE_BUILD: pip install numpy==1.14.6 cython==0.28.3 && cd {package} && python setup.py build_ext --force --inplace
-
-      - name: Build wheels for CPython 3.8
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse brambox/
-        env:
-          CIBW_BUILD: 'cp38-*'
-          CIBW_ARCHS: ${{ matrix.architecture }}
-          CIBW_BEFORE_BUILD: pip install numpy==1.17.5 cython==0.29.14 && cd {package} && python setup.py build_ext --force --inplace
-
-      - name: Build wheels for CPython 3.9
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse brambox/
-        env:
-          CIBW_BUILD: 'cp39-*'
-          CIBW_ARCHS: ${{ matrix.architecture }}
-          CIBW_BEFORE_BUILD: pip install numpy==1.19.3 cython==0.29.21 && cd {package} && python setup.py build_ext --force --inplace
-
-      - name: Build wheels for CPython 3.10
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse brambox/
-        env:
-          CIBW_BUILD: 'cp310-*'
-          CIBW_ARCHS: ${{ matrix.architecture }}
-          CIBW_BEFORE_BUILD: pip install numpy==1.21.2 cython==0.29.25 && cd {package} && python setup.py build_ext --force --inplace
+          CIBW_BEFORE_BUILD: bash scripts/compile.sh {package}
 
       - name: Store artifacts
         uses: actions/upload-artifact@v2
@@ -179,12 +149,12 @@ jobs:
   test_pypi:
     name: Test wheels
     needs: [upload_test_pypi]
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: [3.6, 3.7, 3.8, 3.9, 3.10]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Setup python
@@ -195,4 +165,7 @@ jobs:
       - name: Install package
         run: |
           python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple brambox
+
+      - name: Run package
+        run: |
           python -c "import brambox as bb; print(f'Brambox Version {bb.__version__}')"
