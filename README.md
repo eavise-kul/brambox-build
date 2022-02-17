@@ -19,11 +19,8 @@ git fetch
 git checkout <tag name>
 ```
 
-Push these new changes to this repository, which will try to generate wheels for it and upload them to the [PyPi test servers](https://test.pypi.org/project/brambox/).  
-Try installing the new build in a a new python environment.
-``` bash
-./test_install.sh
-```
+Push these new changes to this repository, which will try to generate wheels for it and upload them to the [PyPi test servers](https://test.pypi.org/project/brambox/)
+and try to install the new package on various different platforms.
 
 If everything seems in order, create a new tag on this repository and push it.
 This will rebuild the wheels and actually push them to [PyPi](https://pypi.org/project/brambox/).
