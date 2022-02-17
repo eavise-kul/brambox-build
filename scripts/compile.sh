@@ -21,6 +21,16 @@ else
     exit 1
 fi
 
-# Build brambox
+# Go into brambox directory
 cd "$1"
+
+# Clean project
+python setup.py clean --all
+find brambox -type f -name '*.c' -exec rm {} \;
+find brambox -type f -name '*.cpp' -exec rm {} \;
+find brambox -type f -name '*.so' -exec rm {} \;
+find brambox -type f -name '*.dll' -exec rm {} \;
+find brambox -type f -name '*.pyd' -exec rm {} \;
+
+# Build project
 CYTHON=1 CDEBUG=0 python setup.py build_ext --force --inplace
