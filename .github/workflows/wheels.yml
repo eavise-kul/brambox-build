@@ -187,8 +187,11 @@ jobs:
         python: [3.6, 3.7, 3.8, 3.9, 3.10]
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Setup python
-        uses: actions/setup-python@v2
+          uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
           cache: pip
