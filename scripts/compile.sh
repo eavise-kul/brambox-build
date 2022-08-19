@@ -15,7 +15,7 @@ elif [[ $version == 3.8* ]]; then
 elif [[ $version == 3.9* ]]; then
     python -m pip install numpy==1.19.3 cython==0.29.21
 elif [[ $version == 3.10* ]]; then
-    python -m pip install numpy==1.21.2 cython==0.29.25
+    python -m pip install numpy==1.21.6 cython==0.29.25
 elif [[ $version == 3.11* ]]; then
     python -m pip install numpy==1.23.2 cython==0.29.30
 else
