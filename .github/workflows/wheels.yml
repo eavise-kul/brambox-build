@@ -20,7 +20,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         architecture: [auto, aarch64]
-        python: [36, 37, 38, 39, 310]
+        python: [36, 37, 38, 39, 310, 311]
         exclude:
           - os: windows-latest
             architecture: aarch64
@@ -60,6 +60,7 @@ jobs:
         env:
           CIBW_BUILD: ${{ format('cp{0}-*', matrix.python) }}
           CIBW_ARCHS: ${{ matrix.architecture }}
+          CIBW_SKIP: "*-musllinux*"
           CIBW_ENVIRONMENT: "${{ (github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')) && 'PYPIBUILD=1' || 'PYPIBUILD=1 PYPITEST=1' }}"
           CIBW_BEFORE_BUILD: bash scripts/compile.sh {package}
         run: |
@@ -176,7 +177,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        python: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
 
     steps:
       - name: Checkout repository
