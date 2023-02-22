@@ -30,12 +30,12 @@ jobs:
     steps:
       - name: Set up QEMU
         if: contains(fromJson('["aarch64", "ppc64le", "s390x"]'), matrix.architecture)
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
         with:
           platforms: arm64
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
           fetch-depth: 0
@@ -48,7 +48,7 @@ jobs:
           git submodule update --recursive
 
       - name: Setup python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
           cache: pip
@@ -67,7 +67,7 @@ jobs:
           python -m cibuildwheel --output-dir wheelhouse brambox/
 
       - name: Store artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifact
           path: wheelhouse/*.whl
