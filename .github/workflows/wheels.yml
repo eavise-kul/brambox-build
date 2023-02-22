@@ -178,6 +178,12 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+        exclude:
+          - os: ubuntu-latest
+            python: "3.6"
+        include:
+          - os: ubuntu-20.04
+            python: "3.6"
 
     steps:
       - name: Checkout repository
