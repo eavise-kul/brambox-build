@@ -18,6 +18,8 @@ elif [[ $version == 3.10* ]]; then
     python -m pip install numpy==1.21.6 cython==0.29.25
 elif [[ $version == 3.11* ]]; then
     python -m pip install numpy==1.23.2 cython==0.29.30
+elif [[ $version == 3.12* ]]; then
+    python -m pip install numpy==1.26.2 cython==0.29.37
 else
     echo "Unsupported python version: $version"
     exit 1
