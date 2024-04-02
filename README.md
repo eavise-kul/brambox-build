@@ -8,7 +8,7 @@ _Brambox build repository_
 
 
 This repository is responsible for building the brambox pip wheels and uploading them to PyPi.  
-It uses the [cibuildwheel](https://github.com/joerick/cibuildwheel) package to generate wheels throught Github Actions.
+It uses the [cibuildwheel](https://github.com/joerick/cibuildwheel) package to generate wheels through Github Actions.
 
 ## Usage
 Whenever there is a new brambox version, pull it in the _brambox_ submodule with:
