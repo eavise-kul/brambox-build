@@ -5,6 +5,7 @@ set -e
 set -x
 
 # Install correct dependencies depending on version
+pip cache purge
 version=$(python --version | cut -d' ' -f2)
 if [[ $version == 3.6* ]]; then
     python -m pip install "numpy==1.13.3" "cython~=3.0.0"
