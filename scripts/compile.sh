@@ -14,7 +14,7 @@ elif [[ $version == 3.7* ]]; then
 elif [[ $version == 3.8* ]]; then
     python -m pip install "numpy==1.17.5" "cython~=3.0.0" tomli
 elif [[ $version == 3.9* ]]; then
-    python -m pip install "numpy==1.19.3" "cython~=3.0.0" tomli
+    python -m pip install "numpy==1.21.6" "cython~=3.0.0" tomli
 elif [[ $version == 3.10* ]]; then
     python -m pip install "numpy==1.21.6" "cython~=3.0.0" tomli
 elif [[ $version == 3.11* ]]; then
