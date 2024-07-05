@@ -18,14 +18,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
         architecture: [auto, aarch64]
         python: [37, 38, 39, 310, 311, 312]
         exclude:
           - os: windows-latest
             architecture: aarch64
-          - os: macos-latest
+          - os: macos-13
             architecture: aarch64
+          - os: macos-14
+            architecture: aarch64
+          - os: macos-14
+            python: 37
 
     steps:
       - name: Set up QEMU
@@ -97,7 +101,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.6
+          python-version: 3.7
           cache: pip
 
       - name: Build sdist
@@ -176,8 +180,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
         python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        exclude:
+        - os: macos-14
+          python: "3.7"
 
     steps:
       - name: Checkout repository
