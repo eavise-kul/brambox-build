@@ -209,7 +209,7 @@ jobs:
 
       - name: Install package
         run: |
-          python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple brambox
+          python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple --pre brambox
 
       - name: Run package
         run: |
