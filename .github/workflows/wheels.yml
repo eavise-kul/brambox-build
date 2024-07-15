@@ -182,9 +182,14 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]
         python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        numpy: ["<2.0.0", ">=2.0.0"]
         exclude:
         - os: macos-14
           python: "3.7"
+        - python: "3.7"
+          numpy: ">=2.0.0"
+        - python: "3.8"
+          numpy: ">=2.0.0"
 
     steps:
       - name: Checkout repository
@@ -197,6 +202,10 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           cache: pip
+
+      - name: Install numpy
+        run: |
+          pip install "numpy${{ matrix.numpy }}"
 
       - name: Install package
         run: |
