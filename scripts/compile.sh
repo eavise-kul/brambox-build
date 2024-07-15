@@ -30,6 +30,7 @@ fi
 cd "$1"
 
 # Clean project
+python setup.py clean --all
 find brambox -type f -name '*.c' -exec rm {} \;
 find brambox -type f -name '*.cpp' -exec rm {} \;
 find brambox -type f -name '*.so' -exec rm {} \;
