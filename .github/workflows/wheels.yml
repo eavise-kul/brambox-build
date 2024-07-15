@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: Set up QEMU
         if: contains(fromJson('["aarch64", "ppc64le", "s390x"]'), matrix.architecture)
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: arm64
 
