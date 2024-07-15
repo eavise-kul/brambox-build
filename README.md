@@ -30,6 +30,17 @@ git tag 'vX.Y.Z'
 git push --tags
 ```
 
+## Multiple Test builds
+The CI/CD pipeline tries to build, upload and install wheels with the [Test PyPi repositories](https://test.pypi.org/project/brambox/) when pushing to master.
+This allows to make sure everything works before actually pushing a release.
+
+One issue you can expect, is if building and uploading works, but there is an issue installing the wheels in a new environment.
+Because PyPi does not allow overriding versions, we need to come up with an alternative solution.
+Our solution is to always build `X.Y.Z.devA` builds on test-pypi, and simply increase the dev number each time we need to push a new build of a specific version.
+Because we never push actual releases to test-pypi, this approach works.
+
+In order to increase the dev counter, you can modify the `PYPI_TEST_DEV` variable in *.github/workflows/wheels.yml*.
+
 
 [version-badge]: https://img.shields.io/pypi/v/brambox.svg?label=version
 [pypi-url]: https://pypi.org/project/brambox/
