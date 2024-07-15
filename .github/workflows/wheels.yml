@@ -66,7 +66,7 @@ jobs:
           CIBW_BUILD: ${{ format('cp{0}-*', matrix.python) }}
           CIBW_ARCHS: ${{ matrix.architecture }}
           CIBW_SKIP: "*-musllinux*"
-          CIBW_ENVIRONMENT: "${{ (github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')) && 'PYPIBUILD=1' || 'PYPIBUILD=1 PYPITEST=${PYPI_TEST_DEV}' }}"
+          CIBW_ENVIRONMENT: "${{ (github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')) && 'PYPIBUILD=1' || format('PYPIBUILD=1 PYPITEST={0}', env.PYPI_TEST_DEV) }}"
           CIBW_BEFORE_BUILD: bash scripts/compile.sh {package}
         run: |
           python -m cibuildwheel --output-dir wheelhouse brambox/
@@ -108,7 +108,7 @@ jobs:
       - name: Build sdist
         env:
           PYPIBUILD: 1
-          PYPITEST: "${{ (github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')) == 'false' && '$PYPI_TEST_DEV' || '0' }}"
+          PYPITEST: "${{ (github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')) == 'false' && env.PYPI_TEST_DEV || '0' }}"
         run: |
           python -m pip install "numpy==1.14.6" "cython~=3.0.0" tomli build
           cd brambox
