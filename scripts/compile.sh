@@ -4,24 +4,35 @@
 set -e
 set -x
 
+# Variables
+PACKAGE_DIR=$1
+OS=$2
+PYTHON=$3
+ARCHITECTURE=$4
+
 # Install correct dependencies depending on version
-version=$(python --version | cut -d' ' -f2)
-if [[ $version == 3.6* ]]; then
-    python -m pip install "numpy==1.13.3" "cython~=3.0.0" tomli
-elif [[ $version == 3.7* ]]; then
-    python -m pip install "numpy==1.14.6" "cython~=3.0.0" tomli
-elif [[ $version == 3.8* ]]; then
-    python -m pip install "numpy==1.17.5" "cython~=3.0.0" tomli
-elif [[ $version == 3.9* ]]; then
+if [[ $PYTHON == '37' ]]; then
+    if [[ $ARCHITECTURE == 'aarch64' ]]; then
+        python -m pip install "numpy==1.19.5" "cython~=3.0.0" tomli
+    else
+        python -m pip install "numpy==1.14.6" "cython~=3.0.0" tomli
+    fi
+elif [[ $PYTHON == '38' ]]; then
+    if [[ $ARCHITECTURE == 'aarch64' ]]; then
+        python -m pip install "numpy==1.19.5" "cython~=3.0.0" tomli
+    else
+        python -m pip install "numpy==1.17.5" "cython~=3.0.0" tomli
+    fi
+elif [[ $PYTHON == '39' ]]; then
     python -m pip install "numpy==2.0.0" "cython~=3.0.0" tomli
-elif [[ $version == 3.10* ]]; then
+elif [[ $PYTHON == '310' ]]; then
     python -m pip install "numpy==2.0.0" "cython~=3.0.0" tomli
-elif [[ $version == 3.11* ]]; then
+elif [[ $PYTHON == '311' ]]; then
     python -m pip install "numpy==2.0.0" "cython~=3.0.0"
-elif [[ $version == 3.12* ]]; then
+elif [[ $PYTHON == '312' ]]; then
     python -m pip install "numpy==2.0.0" "cython~=3.0.0"
 else
-    echo "Unsupported python version: $version"
+    echo "Unsupported python version: $PYTHON"
     exit 1
 fi
 

@@ -67,7 +67,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.architecture }}
           CIBW_SKIP: "*-musllinux*"
           CIBW_ENVIRONMENT: "${{ (github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')) && 'PYPIBUILD=1' || format('PYPIBUILD=1 PYPITEST={0}', env.PYPI_TEST_DEV) }}"
-          CIBW_BEFORE_BUILD: bash scripts/compile.sh {package}
+          CIBW_BEFORE_BUILD: ${{ format('bash scripts/compile.sh {{package}} {0} {1} {2}', matrix.os, matrix.python, matrix.architecture) }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse brambox/
 
